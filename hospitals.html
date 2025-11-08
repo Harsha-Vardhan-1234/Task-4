@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospitals | MediConnect</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">MediConnect</a>
+      <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="doctors.html">Doctors</a></li>
+          <li class="nav-item"><a class="nav-link active" href="hospitals.html">Hospitals</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="container py-5">
+    <h2 class="fw-bold text-center mb-4 text-primary">Our Partner Hospitals</h2>
+    <div class="row" id="hospitalList"></div>
+  </section>
+
+  <footer class="bg-dark text-white text-center py-3">
+    © 2025 MediConnect | Designed by Harsha Vardhan
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    async function loadHospitals() {
+      const response = await fetch("http://127.0.0.1:5000/api/hospitals");
+      const hospitals = await response.json();
+      const container = document.getElementById("hospitalList");
+      container.innerHTML = "";
+
+      if (!hospitals.length) {
+        container.innerHTML = "<p class='text-center text-muted'>No hospitals found.</p>";
+        return;
+      }
+
+      hospitals.forEach(h => {
+        const card = `
+          <div class="col-md-4 mb-4">
+            <div class="card shadow border-0 p-3">
+              <div class="card-body text-center">
+                <i class="ri-hospital-line ri-3x text-success mb-3"></i>
+                <h5 class="card-title">${h.name}</h5>
+                <p class="card-text"><strong>Address:</strong> ${h.address}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        container.innerHTML += card;
+      });
+    }
+
+    loadHospitals();
+  </script>
+</body>
+</html>
